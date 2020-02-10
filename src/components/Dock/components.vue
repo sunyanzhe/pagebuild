@@ -1,4 +1,5 @@
 <template>
+    <!-- 这里click 要用捕获 因为如果冒泡的话 就点不到模板里面的原件了 当然了都是臆想 还没有模板 -->
     <div class="components-container" @click.capture="clickHandler">
         <!-- 不是模板 是原件 -->
         <component v-if="!renderData.children || !renderData.children.length" :is="renderData.comType" :renderData="renderData"></component>
@@ -10,6 +11,7 @@
 <script>
 export default {
     name: 'components',
+    // 异步加载对应的原子组件
     components: {
         'Paragraph': () => import('../comLists/paragraph'),
         'Pic': () => import('../comLists/pic'),

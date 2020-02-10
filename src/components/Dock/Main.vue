@@ -27,8 +27,11 @@ export default {
         },
         dropHandler(e) {
             e.preventDefault();
+            this.$demt.fire('Component.AddOne', this, this.dragInfo);
+        },
+        addComponent(info) {
             let id = this.dragInfo.type + (this.i++),
-                comRenderData = Object.assign({}, this.dragInfo, {id});
+                comRenderData = Object.assign({}, info, {id});
             this.dataList.push(comRenderData);
             this.clearDragInfo();
         },
@@ -43,6 +46,9 @@ export default {
     created() {
         this.$demt.bind('LeftCompoentItem.DragStart', (vm, info) => {
             this.dragInfo = Object.assign({}, info);
+        })
+        this.$demt.bind('Component.AddOne', (vm, info) => {
+            this.addComponent(info);
         })
     }
 }

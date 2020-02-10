@@ -1,6 +1,6 @@
 <template>
     <div class="leftMenu">
-        <list-item v-for="item in comList" :key="item.comId" :itemData="item" @dragstart="dragstart" />
+        <list-item v-for="item in comList" :key="item.comId" :itemData="item" @dragstart="dragstart" @click="click" />
     </div>
 </template>
 <script>
@@ -21,6 +21,9 @@ export default {
             ev.dataTransfer.setDragImage(ev.target, -4, -4);
             // 在这里fire dragstart 在画布页面拿这个值
             this.$demt.fire('LeftCompoentItem.DragStart', this, data);
+        },
+        click(ev, data) {
+            this.$demt.fire('Component.AddOne', this, data);
         }
     },
     created() {
