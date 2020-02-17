@@ -1,10 +1,26 @@
 <template>
-    <p class="com-p">{{renderData.content}}</p>
+    <p :style="styleList" class="com-p">{{content}}</p>
 </template>
 <script>
 export default {
     props: {
         renderData: Object
+    },
+    computed: {
+        content() {
+            let config = this.renderData.config,
+                data = config.find(item => item.paramKey === 'text') || {};
+            return data.value || '这是默认段落'
+        },
+        styleList() {
+            let config = this.renderData.config,
+                data = config.foreac(item => item.paramKey === 'color'),
+                result = {}
+            for (const item of data) {
+                result[item.paramKey] = item.value
+            }
+            return result;
+        }
     }
 }
 </script>

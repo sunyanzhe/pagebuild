@@ -1,10 +1,20 @@
 <template>
-    <p class="com-space">{{renderData.content}}</p>
+    <p :style="styleList" class="com-space">{{renderData.content}}</p>
 </template>
 <script>
 export default {
     props: {
         renderData: Object
+    },
+    computed: {
+        styleList() {
+            let config = this.renderData.config,
+                result = {}
+            for (const item of config) {
+                result[item.paramKey] = item.value;
+            }
+            return result;
+        }
     }
 }
 </script>

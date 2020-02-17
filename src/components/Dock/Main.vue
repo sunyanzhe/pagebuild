@@ -30,7 +30,7 @@ export default {
             this.$demt.fire('Component.AddOne', this, this.dragInfo);
         },
         addComponent(info) {
-            let id = this.dragInfo.type + (this.i++),
+            let id = info.type + (this.i++),
                 comRenderData = Object.assign({}, info, {id});
             this.dataList.push(comRenderData);
             this.clearDragInfo();
