@@ -1,14 +1,20 @@
 <template>
-    <div class="main-content" @drop="dropHandler" @dragover="dragoverHandler">
-        <components v-for="item in dataList" :key="item.id" :renderData="item" />
+    <div class="main-content">
+        <drop-area :index="0" :visible="areaVisible" @drop="drop" />
+        <template v-for="(item, index) in dataList">
+            <components  :key="item.id" :index="index" :renderData="item" :clickHandle="comClickHandle" />
+            <drop-area :key="index" :index="index + 1" :visible="areaVisible" @drop="drop" />
+        </template>
     </div>
 </template>
 <script>
 import Components from './components.vue'
+import dropArea from './dropArea.vue'
 export default {
+    name: 'Main',
     components: {
         Components,
-
+        dropArea
     },
     data() {
         return {
@@ -18,21 +24,19 @@ export default {
             dragInfo: {},
             // 每个组件的唯一ID
             i: 0,
+            areaVisible: false
         }
     },
     methods: {
-        dragEnterHandler(e) {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'copy';
+        drop(index) {
+            this.$demt.fire('Component.AddOne', this.dragInfo, index);
         },
-        dropHandler(e) {
-            e.preventDefault();
-            this.$demt.fire('Component.AddOne', this, this.dragInfo);
-        },
-        addComponent(info) {
+        addComponent(info, index = undefined) {
             let id = info.type + (this.i++),
-                comRenderData = Object.assign({}, info, {id});
-            this.dataList.push(comRenderData);
+                comRenderData = Object.assign({id, checked: false}, info);
+            index === undefined ?  
+                this.dataList.push(comRenderData) :
+                this.dataList.splice(index, 0, comRenderData);
             this.clearDragInfo();
         },
         dragoverHandler(e) {
@@ -41,14 +45,25 @@ export default {
         },
         clearDragInfo() {
             this.dragInfo = {};
+        },
+        // 模板点击事件
+        comClickHandle(config, index) {
+            this.$store.commit('SET_COMPONENT_DATA', config);
+            this.dataList.forEach((item, i) => item.checked = index == i)
         }
     },
     created() {
         this.$demt.bind('LeftCompoentItem.DragStart', (vm, info) => {
             this.dragInfo = Object.assign({}, info);
         })
-        this.$demt.bind('Component.AddOne', (vm, info) => {
-            this.addComponent(info);
+        this.$demt.bind('Component.AddOne', (info, index) => {
+            this.addComponent(info, index);
+        })
+        this.$demt.bind('LeftCompoentItem.DragStart', () => {
+            this.areaVisible = true;
+        });
+        this.$demt.bind('LeftCompoentItem.DragEnd', () => {
+            this.areaVisible = false;
         })
     }
 }

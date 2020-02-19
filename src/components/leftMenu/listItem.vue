@@ -1,6 +1,7 @@
 <template>
     <div class="com-container" draggable="true"
         @dragstart="dragStartHandle($event, itemData)"
+        @dragend="dragEndHandle($event)"
         @click="clickHandler($event, itemData)"
     >
         <div class="com-content">{{itemData.desc}}</div>
@@ -18,6 +19,9 @@ export default {
         },
         clickHandler(ev, info) {
             this.$emit('click', ev, info);
+        },
+        dragEndHandle(ev) {
+            this.$emit('dragend', ev);
         }
     }
 }

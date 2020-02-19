@@ -12,17 +12,13 @@ export default {
         DockMain,
         OperationMenu
     },
-    data() {
-        return {
-            showMenu: false,
-            config: []
-        }
-    },
-    created() {
-        this.$demt.bind('OperationMenu.show', (config) => {
-            this.showMenu = true;
-            this.config = config;
-        });
+    computed: {
+      showMenu() {
+        return this.$store.state.showOperateMenu;
+      },
+      config() {
+        return this.$store.state.curComponentData;
+      }
     }
 }
 </script>

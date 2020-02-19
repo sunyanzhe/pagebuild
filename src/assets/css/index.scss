@@ -1,4 +1,11 @@
 @import url("./rest.scss");
+@import url("./color.scss");
+
+$primary: #409EFF;
+$primary-hover: rgb(217, 236, 255);
+$place-holder: #C0C4CC;
+$white: #fcfcfc;
+
 .layout {
     width: 100%;
     height: 100%;
@@ -48,11 +55,42 @@
     justify-content: center;
     align-items: center;
 }
+.components-container {
+    position: relative;
+    &.acitved::after {
+        content: '';
+        width: 100%;
+        height: 100%;
+        border: 1px dashed $primary;
+        position: absolute;
+        top: 0;
+        left: 0;
+        box-sizing: border-box;
+        pointer-events: none;
+        z-index: 2;
+    }
+}
 .main-content {
     box-shadow: -2px 2px 8px rgba(0,0,0,.15);
     width: 375px;
     min-height: 630px;
     background: #fff;
+    .drop-area {
+        width: 100%;
+        height: 36px;
+        border: 1px dashed $place-holder;
+        box-sizing: border-box;
+        font-size: 14px;
+        text-align: center;
+        line-height: 34px;
+        color: $place-holder;
+        &.active {
+            border-color: $primary;
+            background: $primary-hover;
+            color: $white;
+        }
+    }
+    
 }
 .operation-menu-container {
     position: relative;

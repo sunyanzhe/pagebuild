@@ -10,16 +10,12 @@ export default {
         content() {
             let config = this.renderData.config,
                 data = config.find(item => item.paramKey === 'text') || {};
-            return data.value || '这是默认段落'
+            return data.value || '这是默认段落';
         },
         styleList() {
             let config = this.renderData.config,
-                data = config.foreac(item => item.paramKey === 'color'),
-                result = {}
-            for (const item of data) {
-                result[item.paramKey] = item.value
-            }
-            return result;
+                data = config.find(item => item.paramKey === 'color') || {};
+            return {[data.paramKey]: data.value};
         }
     }
 }
